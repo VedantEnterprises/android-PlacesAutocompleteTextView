@@ -59,6 +59,8 @@ public class PlacesAutocompleteTextView extends AutoCompleteTextView {
 
     private boolean attributionEnabled = true;
 
+    private boolean apiSearchEnabled = true;
+
     /**
      * Creates a new PlacesAutocompleteTextView with the provided API key and the default history file
      */
@@ -464,5 +466,11 @@ public class PlacesAutocompleteTextView extends AutoCompleteTextView {
       this.attributionEnabled = enabled;
         //TODO: set super.setDropDownBackgroundResource(R.drawable.pacv_popup_background_white);
       return this;
+    }
+
+    public PlacesAutocompleteTextView setApiSearchEnabled(boolean apiSearchEnabled) {
+        this.apiSearchEnabled = apiSearchEnabled;
+        api.setApiSearchEnabled(apiSearchEnabled);
+        return this;
     }
 }

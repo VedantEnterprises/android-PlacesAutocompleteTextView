@@ -40,6 +40,8 @@ public class PlacesApi {
     private static final Long NO_BIAS_RADIUS = 20000000L;
     private static final Location NO_BIAS_LOCATION;
 
+    private boolean apiSearchEnabled = true;
+
     static {
         NO_BIAS_LOCATION = new Location("none");
         NO_BIAS_LOCATION.setLatitude(0.0d);
@@ -159,6 +161,8 @@ public class PlacesApi {
      * @throws IOException
      */
     public PlacesAutocompleteResponse autocomplete(final String input, final AutocompleteResultType type) throws IOException {
+        Log.d(TAG, "autocomplete() Called");
+        if(!apiSearchEnabled) return null;
         final String finalInput = input == null ? "" : input;
 
         final AutocompleteResultType finalType = type == null ? DEFAULT_RESULT_TYPE : type;
@@ -220,5 +224,9 @@ public class PlacesApi {
 
 
         return httpClient.executeDetailsRequest(uriBuilder.build());
+    }
+
+    public void setApiSearchEnabled(boolean apiSearchEnabled) {
+        this.apiSearchEnabled = apiSearchEnabled;
     }
 }

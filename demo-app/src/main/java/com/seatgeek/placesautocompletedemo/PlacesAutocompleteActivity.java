@@ -42,6 +42,7 @@ public class PlacesAutocompleteActivity extends Activity {
         mAutocomplete.setCountryIso("ID").setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
             @Override
             public void onPlaceSelected(final Place place) {
+
                 mAutocomplete.getDetailsFor(place, new DetailsCallback() {
                     @Override
                     public void onSuccess(final PlaceDetails details) {
@@ -78,6 +79,7 @@ public class PlacesAutocompleteActivity extends Activity {
                                 }
                             }
                         }
+                        mAutocomplete.setApiSearchEnabled(false);
                     }
 
                     @Override
