@@ -57,6 +57,8 @@ public class PlacesAutocompleteTextView extends AutoCompleteTextView {
 
     private boolean completionEnabled = true;
 
+    private boolean attributionEnabled = true;
+
     /**
      * Creates a new PlacesAutocompleteTextView with the provided API key and the default history file
      */
@@ -111,6 +113,7 @@ public class PlacesAutocompleteTextView extends AutoCompleteTextView {
         String layoutHistoryFile = typedArray.getString(R.styleable.PlacesAutocompleteTextView_pacv_historyFile);
         languageCode = typedArray.getString(R.styleable.PlacesAutocompleteTextView_pacv_languageCode);
         resultType = AutocompleteResultType.fromEnum(typedArray.getInt(R.styleable.PlacesAutocompleteTextView_pacv_resultType, PlacesApi.DEFAULT_RESULT_TYPE.ordinal()));
+        attributionEnabled = typedArray.getBoolean(R.styleable.PlacesAutocompleteTextView_pacv_attributionEnabled, true);
         typedArray.recycle();
 
         final String finalHistoryFileName = historyFileName != null ? historyFileName : layoutHistoryFile;
@@ -157,7 +160,9 @@ public class PlacesAutocompleteTextView extends AutoCompleteTextView {
             }
         });
 
-        super.setDropDownBackgroundResource(R.drawable.pacv_popup_background_white);
+        if(attributionEnabled) {
+          super.setDropDownBackgroundResource(R.drawable.pacv_popup_background_white);
+        }
     }
 
     /**
@@ -447,5 +452,17 @@ public class PlacesAutocompleteTextView extends AutoCompleteTextView {
         this.countryIso = countryIso;
         api.setCountry(countryIso);
         return this;
+    }
+
+    /**
+     *  When you display predictions from the Place Autocomplete service without a map,
+     *  you must include the 'Powered by Google' logo.
+     * @param enabled
+     * @return
+     */
+    public PlacesAutocompleteTextView setAttributionEnabled(boolean enabled) {
+      this.attributionEnabled = enabled;
+        //TODO: set super.setDropDownBackgroundResource(R.drawable.pacv_popup_background_white);
+      return this;
     }
 }

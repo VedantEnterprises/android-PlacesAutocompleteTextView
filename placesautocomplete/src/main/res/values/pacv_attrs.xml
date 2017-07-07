@@ -12,6 +12,7 @@
             <enum name="establishment" value="2"/>
             <enum name="no_type" value="3"/>
         </attr>
+        <attr name="pacv_attributionEnabled" format="boolean"/>
     </declare-styleable>
 
     <attr name="pacv_placesAutoCompleteTextViewStyle" format="reference"/>
