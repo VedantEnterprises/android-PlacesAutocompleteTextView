@@ -52,6 +52,9 @@ public class PlacesAutocompleteTextView extends AutoCompleteTextView {
     @Nullable
     private String languageCode;
 
+    @Nullable
+    private String countryIso;
+
     private boolean completionEnabled = true;
 
     /**
@@ -438,5 +441,11 @@ public class PlacesAutocompleteTextView extends AutoCompleteTextView {
     public void setLanguageCode(@Nullable String languageCode) {
         this.languageCode = languageCode;
         api.setLanguageCode(this.languageCode);
+    }
+
+    public PlacesAutocompleteTextView setCountryIso(String countryIso) {
+        this.countryIso = countryIso;
+        api.setCountry(countryIso);
+        return this;
     }
 }

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import android.util.Log;
 import com.seatgeek.placesautocomplete.model.AutocompleteResultType;
 import com.seatgeek.placesautocomplete.model.PlacesAutocompleteResponse;
 import com.seatgeek.placesautocomplete.model.PlacesDetailsResponse;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * executing them using the provided {@link PlacesHttpClient}
  */
 public class PlacesApi {
+    private static final String TAG = PlacesApi.class.getSimpleName();
     public static final AutocompleteResultType DEFAULT_RESULT_TYPE = AutocompleteResultType.ADDRESS;
 
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
@@ -31,6 +33,9 @@ public class PlacesApi {
     private static final String PARAMETER_TYPE = "types";
     private static final String PARAMETER_PLACE_ID = "placeid";
     private static final String PARAMETER_LANGUAGE = "language";
+    private static final String PARAMETER_COMPONENTS = "components";
+
+    private static final String COMPONENT_COUNTRY = "country:";
 
     private static final Long NO_BIAS_RADIUS = 20000000L;
     private static final Location NO_BIAS_LOCATION;
@@ -55,6 +60,9 @@ public class PlacesApi {
 
     @Nullable
     private String languageCode;
+
+    @Nullable
+    private String countryIso;
 
     private boolean locationBiasEnabled = true;
 
@@ -115,7 +123,15 @@ public class PlacesApi {
         this.currentLocation = currentLocation;
     }
 
-
+    /**
+     *
+     * @param countryIso iso of country.
+     * Countries must be passed as a two character, ISO 3166-1 Alpha-2 compatible country code.
+     * For example: components=country:fr would restrict your results to places within France.
+     */
+    public void setCountry(String countryIso) {
+        this.countryIso = countryIso;
+    }
     /**
      *
      * @return the languageCode code
@@ -154,6 +170,7 @@ public class PlacesApi {
                 .appendQueryParameter(PARAMETER_KEY, googleApiKey)
                 .appendQueryParameter(PARAMETER_INPUT, finalInput);
 
+        Log.d(TAG, "uri = " + uriBuilder.toString());
         if (finalType != AutocompleteResultType.NO_TYPE) {
             uriBuilder.appendQueryParameter(PARAMETER_TYPE, finalType.getQueryParam());
         }
@@ -173,6 +190,10 @@ public class PlacesApi {
 
         if (languageCode != null) {
             uriBuilder.appendQueryParameter(PARAMETER_LANGUAGE, languageCode);
+        }
+
+        if(countryIso != null) {
+            uriBuilder.appendQueryParameter(PARAMETER_COMPONENTS, COMPONENT_COUNTRY + countryIso);
         }
 
         return httpClient.executeAutocompleteRequest(uriBuilder.build());

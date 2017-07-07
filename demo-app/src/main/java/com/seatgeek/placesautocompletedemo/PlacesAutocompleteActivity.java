@@ -39,8 +39,7 @@ public class PlacesAutocompleteActivity extends Activity {
 
         setContentView(R.layout.activity_places_autocomplete);
         ButterKnife.inject(this);
-
-        mAutocomplete.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
+        mAutocomplete.setCountryIso("ID").setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
             @Override
             public void onPlaceSelected(final Place place) {
                 mAutocomplete.getDetailsFor(place, new DetailsCallback() {
